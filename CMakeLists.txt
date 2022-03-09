@@ -355,11 +355,10 @@ set(LIBOPENMPT_FILES
 add_library(${PROJECT_NAME} STATIC ${LIBOPENMPT_FILES})
 
 target_include_directories(${PROJECT_NAME} PUBLIC
-    ${LIBOPENMPT_INCLUDE_DIR}
+   ${OPENMPT_DIR}
     #
 )
 target_include_directories(${PROJECT_NAME} PRIVATE
-   ${OPENMPT_DIR}
    ${OPENMPT_SOURCE_DIR}
    ${OPENMPT_COMMON_INCLUDE_DIR}
 
