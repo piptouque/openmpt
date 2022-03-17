@@ -14,8 +14,9 @@ set(OPENMPT_DIR ${PROJECT_SOURCE_DIR})
 set(OPENMPT_SOURCE_DIR ${PROJECT_SOURCE_DIR}/src)
 #
  set(LIBOPENMPT_DIR ${OPENMPT_DIR}/libopenmpt)
- set(LIBOPENMPT_SOURCE_DIR ${OPENMPT_DIR}/libopenmpt)
- set(LIBOPENMPT_INCLUDE_DIR ${OPENMPT_DIR}/libopenmpt)
+ set(LIBOPENMPT_SOURCE_DIR ${LIBOPENMPT_DIR})
+ set(LIBOPENMPT_INCLUDE_DIR ${LIBOPENMPT_DIR})
+#
 #
  set(OPENMPT_COMMON_SOURCE_DIR ${OPENMPT_DIR}/common)
  set(OPENMPT_COMMON_INCLUDE_DIR ${OPENMPT_DIR}/common)
@@ -24,6 +25,17 @@ set(OPENMPT_SOURCE_DIR ${PROJECT_SOURCE_DIR}/src)
  set(OPENMPT_MPT_SOURCE_DIR ${OPENMPT_SOURCE_DIR}/mpt)
  set(OPENMPT_MPT_INCLUDE_DIR ${OPENMPT_SOURCE_DIR}/mpt)
 #
+set(LIBOPENMPT_INCLUDE_DIRS
+   "${OPENMPT_DIR},${OPENMPT_COMMON_INCLUDE_DIR}"
+   CACHE STRING
+   "libopenmpt include directories" FORCE
+
+)
+set(LIBOPENMPT_LIBRARIES
+   ${PROJECT_NAME}
+   CACHE STRING
+   "libopenmpt libraries" FORCE
+)
 
 ###
  set(LIBOPENMPT_SOURCE_FILES 
@@ -356,11 +368,9 @@ add_library(${PROJECT_NAME} STATIC ${LIBOPENMPT_FILES})
 
 target_include_directories(${PROJECT_NAME} PUBLIC
    ${OPENMPT_DIR}
-    #
 )
 target_include_directories(${PROJECT_NAME} PRIVATE
-   ${OPENMPT_SOURCE_DIR}
-   ${OPENMPT_COMMON_INCLUDE_DIR}
+   ${LIBOPENMPT_INCLUDE_DIRS}
 
 )
 
@@ -369,64 +379,4 @@ target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_20)
 target_compile_definitions(${PROJECT_NAME} PRIVATE 
    LIBOPENMPT_BUILD
    NO_WINAMP
-   )
-
-# ifeq ($(HACK_ARCHIVE_SUPPORT),1)
-# SOUNDLIB_CXX_SOURCES += $(sort $(wildcard unarchiver/*.cpp))
-# endif
-
-#include "common/stdafx.h"
-#include "common/version.h"
-#include "common/misc_util.h"
-#include "common/Dither.h"
-#include "common/FileReader.h"
-#include "common/Logging.h"
-#include "openmpt/all/BuildSettings.hpp"
-#include "mpt/base/algorithm.hpp"
-#include "mpt/base/saturate_cast.hpp"
-#include "mpt/base/saturate_round.hpp"
-#include "mpt/base/saturate_round.hpp"
-#include "mpt/audio/span.hpp"
-#include "mpt/format/default_integer.hpp"
-#include "mpt/format/default_floatingpoint.hpp"
-#include "mpt/format/default_string.hpp"
-#include "mpt/io_read/callbackstream.hpp"
-#include "mpt/io_read/filecursor_callbackstream.hpp"
-#include "mpt/io_read/filecursor_memory.hpp"
-#include "mpt/io_read/filecursor_stdstream.hpp"
-#include "mpt/mutex/mutex.hpp"
-#include "mpt/parse/parse.hpp"
-#include "mpt/string/types.hpp"
-#include "mpt/string/utility.hpp"
-#include "mpt/string_transcode/transcode.hpp"
-#include "soundlib/Sndfile.h"
-#include "soundlib/mod_specifications.h"
-#include "soundlib/AudioReadTarget.h"
-
-#include "soundlib/Sndfile.h"
-
-
-# file(GLOB OPENMPT_COMMON_SOURCE_FILES ${OPENMPT_COMMON_SOURCE_DIR}/*.c?(pp))
-# file(GLOB OPENMPT_COMMON_INCLUDE_FILES ${OPENMPT_COMMON_INCLUDE_DIR}/*.h?(pp))
-# file(GLOB OPENMPT_SOUNDLIB_SOURCE_FILES ${OPENMPT_SOUNDLIB_SOURCE_DIR}/*.c?(pp))
-# file(GLOB OPENMPT_SOUNDLIB_INCLUDE_FILES ${OPENMPT_SOUNDLIB_INCLUDE_DIR}/*.h?(pp))
-# file(GLOB OPENMPT_BASE_SOURCE_FILES ${OPENMPT_DIR}/base/*.c?(pp))
-# file(GLOB OPENMPT_BASE_INCLUDE_FILES ${OPENMPT_DIR}/base/*.h?(pp))
-# file(GLOB OPENMPT_FORMAT_SOURCE_FILES ${OPENMPT_DIR}/format/*.c?(pp))
-# file(GLOB OPENMPT_FORMAT_INCLUDE_FILES ${OPENMPT_DIR}/format/*.h?(pp))
-# file(GLOB OPENMPT_IO_SOURCE_FILES ${OPENMPT_DIR}/io/*.c?(pp))
-# file(GLOB OPENMPT_IO_INCLUDE_FILES ${OPENMPT_DIR}/io/*.h?(pp))
-# file(GLOB OPENMPT_IO_READ_SOURCE_FILES ${OPENMPT_DIR}/io_read/*.c?(pp))
-# file(GLOB OPENMPT_IO_READ_INCLUDE_FILES ${OPENMPT_DIR}/io_read/*.h?(pp))
-# file(GLOB OPENMPT_ENDIAN_SOURCE_FILES ${OPENMPT_DIR}/endian/*.c?(pp))
-# file(GLOB OPENMPT_ENDIAN_INCLUDE_FILES ${OPENMPT_DIR}/endian/*.h?(pp))
-# file(GLOB OPENMPT_PARSE_SOURCE_FILES ${OPENMPT_DIR}/parse/*.c?(pp))
-# file(GLOB OPENMPT_PARSE_INCLUDE_FILES ${OPENMPT_DIR}/parse/*.h?(pp))
-# file(GLOB OPENMPT_STRING_SOURCE_FILES ${OPENMPT_DIR}/string/*.c?(pp))
-# file(GLOB OPENMPT_STRING_INCLUDE_FILES ${OPENMPT_DIR}/string/*.h?(pp))
-# file(GLOB OPENMPT_STRING_TRANSCODE_SOURCE_FILES ${OPENMPT_DIR}/string_transcode/*.c?(pp))
-# file(GLOB OPENMPT_STRING_TRANSCODE_INCLUDE_FILES ${OPENMPT_DIR}/string_transcode/*.h?(pp))
-# file(GLOB OPENMPT_MUTEX_SOURCE_FILES ${OPENMPT_DIR}/mutex/*.c?(pp))
-# file(GLOB OPENMPT_MUTEX_INCLUDE_FILES ${OPENMPT_DIR}/mutex/*.h?(pp))
-# file(GLOB OPENMPT_AUDIO_SOURCE_FILES ${OPENMPT_DIR}/audio/*.c?(pp))
-# file(GLOB OPENMPT_AUDIO_INCLUDE_FILES ${OPENMPT_DIR}/audio/*.h?(pp))
+)
